@@ -15,8 +15,6 @@ public class CsvStarbucks{
     @CsvBindByName
     private String address;
 
-//    @CsvBindByName
-//    private String country;
 
     public String getlatitude() { return latitude; }
 
@@ -38,10 +36,6 @@ public class CsvStarbucks{
     public void setAddress(String address) { this.address = address; }
 
 
-//    public String getCountry() { return country; }
-//
-//    public void setCountry(String country) { this.country = country; }
-
     @Override
     public String toString() {
         return "CsvStarbucks{" +
@@ -49,7 +43,6 @@ public class CsvStarbucks{
                 "longitude='" + longitude + '\'' +
                 "name='" + name + '\'' +
                 "address='" + address + '\'' +
-              //  "country='" + country + '\'' +
                 '}';
     }
 }

@@ -13,32 +13,39 @@ import java.util.List;
 
 public class OpenCSVReaderStarbucks{
     private static final String SAMPLE_CSV_fILE_PATH = "csv/starbucks.csv";
+    private List<CsvStarbucks> starbucks = new ArrayList<>();
+
+    public List<CsvStarbucks> getStarbucks() {
+        return starbucks;
+    }
+                            ///possibly wrong
+    public void processCsv() throws IOException {
+        Reader reader = Files.newBufferedReader(Paths.get(SAMPLE_CSV_fILE_PATH));
+
+        CsvToBean<CsvStarbucks> csvToBean = new CsvToBeanBuilder(reader)
+                .withType(CsvStarbucks.class)
+                .withIgnoreLeadingWhiteSpace(true)
+                .build();
+
+        Iterator<CsvStarbucks> csvStarbucksIterator = csvToBean.iterator();
+
+        while(csvStarbucksIterator.hasNext()) {
+            CsvStarbucks csvStarbucks = csvStarbucksIterator.next();
+            starbucks.add(csvStarbucks);
+        }
+    }
 
 
     public static void main(String[] args) throws IOException {
         List<CsvStarbucks> starbucks = new ArrayList<>();
-        try(
-                Reader reader = Files.newBufferedReader(Paths.get(SAMPLE_CSV_fILE_PATH));
 
-            //    CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build()
+        // 1. create a new openCsvReaderStarbucks object
+        OpenCSVReaderStarbucks starbucksStores = new OpenCSVReaderStarbucks();
+        // 2. call s.processCsv
+        starbucksStores.processCsv();
+        // 3. assign starbucks = s.getStarbucks
+        starbucks = starbucksStores.getStarbucks();
 
-        ) {
-            CsvToBean<CsvStarbucks> csvToBean = new CsvToBeanBuilder(reader)
-                    .withType(CsvStarbucks.class)
-                    .withIgnoreLeadingWhiteSpace(true)
-                    .build();
-
-            Iterator<CsvStarbucks> csvStarbucksIterator = csvToBean.iterator();
-
-            while(csvStarbucksIterator.hasNext()) {
-            CsvStarbucks csvStarbucks = csvStarbucksIterator.next();
-            starbucks.add(csvStarbucks);
-            }
-        } catch (Exception e) {
-            System.err.println("Ooops something went wrong!");
-            System.err.println("What happened?");
-            e.printStackTrace();
-        }
 
         System.out.println("----- Starbucks -----");
         for (CsvStarbucks starbuck : starbucks) {
@@ -47,12 +54,3 @@ public class OpenCSVReaderStarbucks{
 
     }
 }
-// Reading Records One by One in a String array
-//            String[] nextRecord;
-//            while ((nextRecord = csvReader.readNext()) != null) {
-//                System.out.println("latitude : " + nextRecord[0]);
-//                System.out.println("longitude : " + nextRecord[1]);
-//                System.out.println("name : " + nextRecord[2]);
-//                System.out.println("address : " + nextRecord[3]);
-//              //  System.out.println("country : " + nextRecord[4]);
-//                System.out.println("==========================");
