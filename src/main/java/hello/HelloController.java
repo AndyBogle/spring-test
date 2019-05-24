@@ -22,6 +22,11 @@ public class HelloController {
         List<CsvStarbucks> starbucks = requestStarbucks.getStarbucks();
         return starbucks;
     }
+
+    @RequestMapping("/map")
+    public String map(){
+        return "map.html";
+    }
 }
 
 
